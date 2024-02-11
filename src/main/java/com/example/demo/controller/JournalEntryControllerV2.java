@@ -37,7 +37,7 @@ public class JournalEntryControllerV2 {
     }
 
     @PutMapping("{id}")
-    public void updateJournalEntry(@PathVariable long id, @RequestBody JournalEntry journalEntry){
+    public void updateJournalEntry(@PathVariable String id, @RequestBody JournalEntry journalEntry){
 
     }
 }
