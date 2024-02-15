@@ -12,6 +12,7 @@ import java.util.List;
 
 @Document(collection = "journal_entries")
 @Data
+@NoArgsConstructor
 public class JournalEntryV2 {
     @Id
     private ObjectId id;
@@ -19,5 +20,4 @@ public class JournalEntryV2 {
     private String title;
     private String content;
     private LocalDateTime date;
-    private List<JournalEntryV2> journalEntryV2List = new ArrayList<>();
 }
