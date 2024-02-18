@@ -3,12 +3,15 @@ package com.example.demo.controller;
 import com.example.demo.entity.JournalEntry;
 import com.example.demo.entity.JournalEntryV2;
 import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepo;
 import com.example.demo.service.JournalEntryServiceV2;
 import com.example.demo.service.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -21,28 +24,28 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRepo userRepo;
+
     @GetMapping
     public List<User> getAllUser(){
         return userService.getAll();
     }
 
-    @PostMapping
-    public void createUser(@RequestBody User user){
-        userService.saveEntry(user);
-    }
-
-    @PutMapping("/{username}")
-    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable String username){
+    @PutMapping
+    public ResponseEntity<?> updateUser(@RequestBody User user){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
         User userInDb = userService.findByUserName(username);
-        if(userInDb!=null){
-            userInDb.setPassword(user.getPassword());
-            userService.saveEntry(userInDb);
-        }
+        userInDb.setPassword(user.getPassword());
+        userService.saveNewUser(userInDb);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping
     public ResponseEntity<?> deleteUserByName(String username){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userRepo.deleteByUsername(authentication.getName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

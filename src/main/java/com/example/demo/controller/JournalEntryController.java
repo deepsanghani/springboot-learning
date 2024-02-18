@@ -2,8 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.JournalEntry;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.processing.Generated;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
