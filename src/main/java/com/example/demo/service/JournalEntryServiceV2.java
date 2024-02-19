@@ -27,7 +27,7 @@ public class JournalEntryServiceV2 {
         journalEntry.setDate(LocalDateTime.now());
         JournalEntryV2 saved = journalEntryRepo.save(journalEntry);
         user.getJournalEntries().add(saved);
-        userService.saveUser(user);
+        userService.saveEntry(user);
     }
 
     public void saveEntry(JournalEntryV2 journalEntry){
