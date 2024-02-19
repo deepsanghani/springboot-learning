@@ -27,7 +27,7 @@ public class JournalEntryServiceV2 {
         journalEntry.setDate(LocalDateTime.now());
         JournalEntryV2 saved = journalEntryRepo.save(journalEntry);
         user.getJournalEntries().add(saved);
-        userService.saveEntry(user);
+        userService.saveUser(user);
     }
 
     public void saveEntry(JournalEntryV2 journalEntry){
@@ -47,5 +47,9 @@ public class JournalEntryServiceV2 {
         user.getJournalEntries().removeIf(x -> x.getId().equals(id));
         userService.saveEntry(user);
         journalEntryRepo.deleteById(id);
+    }
+
+    public  List<JournalEntryV2> findByUsername(String username){
+        return null;
     }
 }

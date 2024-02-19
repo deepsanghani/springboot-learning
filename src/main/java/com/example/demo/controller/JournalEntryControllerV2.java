@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/journal")
@@ -29,7 +30,8 @@ public class JournalEntryControllerV2 {
     @GetMapping
     public ResponseEntity<?> getAllJournalEntriesOfUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByUserName(authentication.getName());
+        String username = authentication.getName();
+        User user = userService.findByUserName(username);
         List<JournalEntryV2> allEntry = user.getJournalEntries();
         if(allEntry!=null && !allEntry.isEmpty()){
             return new ResponseEntity<>(allEntry, HttpStatus.OK);
@@ -56,9 +58,13 @@ public class JournalEntryControllerV2 {
     public ResponseEntity<JournalEntryV2> getEntryByPathVarId(@PathVariable ObjectId id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        Optional<JournalEntryV2> journalEntryServiceV2ById = journalEntryServiceV2.findById(id);
-        if(journalEntryServiceV2ById.isPresent()){
-            return new ResponseEntity<>(journalEntryServiceV2ById.get(),HttpStatus.OK);
+        User user = userService.findByUserName(username);
+        List<JournalEntryV2> li = user.getJournalEntries().stream().filter(x -> x.getId().equals(id)).collect(Collectors.toList());
+        if(li.isEmpty()!=false){
+            Optional<JournalEntryV2> journalEntryServiceV2ById = journalEntryServiceV2.findById(id);
+            if(journalEntryServiceV2ById.isPresent()){
+                return new ResponseEntity<>(journalEntryServiceV2ById.get(),HttpStatus.OK);
+            }
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
