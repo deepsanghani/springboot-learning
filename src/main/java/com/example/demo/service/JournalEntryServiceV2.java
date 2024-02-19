@@ -48,4 +48,8 @@ public class JournalEntryServiceV2 {
         userService.saveEntry(user);
         journalEntryRepo.deleteById(id);
     }
+
+    public  List<JournalEntryV2> findByUsername(String username){
+        return null;
+    }
 }
