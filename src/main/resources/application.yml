@@ -1,12 +1,10 @@
 spring:
-  data:
-    mongodb:
-      uri:
-      port: 27017
-      database: journaldb
-      auto-index-creation: true
+  profiles:
+    active: dev
 
-server:
-  port: 8080
-  servlet:
-    context-path: /journal
+
+logging:
+  level:
+    com:
+      example:
+        demo: DEBUG

@@ -5,6 +5,7 @@ import com.example.demo.entity.JournalEntryV2;
 import com.example.demo.entity.User;
 import com.example.demo.repository.JournalEntryRepo;
 import com.example.demo.repository.UserRepo;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,11 +16,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Component
 public class UserService {
     @Autowired
     private UserRepo userRepo;
-
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     public void saveEntry(User user){
         userRepo.save(user);
@@ -33,6 +34,7 @@ public class UserService {
             return true;
         }
         catch(Exception e){
+            log.error("Error occured for {}", user.getUsername(), e);
             return false;
         }
     }
