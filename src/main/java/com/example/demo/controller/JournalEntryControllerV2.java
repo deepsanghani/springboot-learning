@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -60,7 +58,7 @@ public class JournalEntryControllerV2 {
         String username = authentication.getName();
         User user = userService.findByUserName(username);
         List<JournalEntryV2> li = user.getJournalEntries().stream().filter(x -> x.getId().equals(id)).collect(Collectors.toList());
-        if(li.isEmpty()!=false){
+        if(li.isEmpty()){
             Optional<JournalEntryV2> journalEntryServiceV2ById = journalEntryServiceV2.findById(id);
             if(journalEntryServiceV2ById.isPresent()){
                 return new ResponseEntity<>(journalEntryServiceV2ById.get(),HttpStatus.OK);
@@ -86,7 +84,7 @@ public class JournalEntryControllerV2 {
         String username = authentication.getName();
         User user = userService.findByUserName(username);
         List<JournalEntryV2> li = user.getJournalEntries().stream().filter(x -> x.getId().equals(id)).collect(Collectors.toList());
-        if(li.isEmpty()==false){
+        if(!li.isEmpty()){
             Optional<JournalEntryV2> journalEntryServiceV2ById = journalEntryServiceV2.findById(id);
             if(journalEntryServiceV2ById.isPresent()){
                 JournalEntryV2 old = journalEntryServiceV2ById.get();

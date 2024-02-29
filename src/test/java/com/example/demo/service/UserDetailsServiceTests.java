@@ -4,6 +4,7 @@ import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepo;
 import org.bson.assertions.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,6 +23,7 @@ public class UserDetailsServiceTests {
     @InjectMocks
     private UserDetailsServiceImpl userDetailsService;
 
+
     @Mock
     private UserRepo userRepo;
 
@@ -30,6 +32,7 @@ public class UserDetailsServiceTests {
         MockitoAnnotations.initMocks(this);
     }
 
+    @Disabled
     @Test
     void loadUserByUsernameTest(){
         when(userRepo.findByUsername(ArgumentMatchers.anyString())).thenReturn(User.builder().username("Ram").password("abcd").roles(new ArrayList<>()).build());

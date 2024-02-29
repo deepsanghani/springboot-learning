@@ -1,9 +1,6 @@
 package com.example.demo.service;
 
-
-import com.example.demo.entity.JournalEntryV2;
 import com.example.demo.entity.User;
-import com.example.demo.repository.JournalEntryRepo;
 import com.example.demo.repository.UserRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;

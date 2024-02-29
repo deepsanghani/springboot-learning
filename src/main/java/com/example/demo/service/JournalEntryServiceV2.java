@@ -4,16 +4,17 @@ package com.example.demo.service;
 import com.example.demo.entity.JournalEntryV2;
 import com.example.demo.entity.User;
 import com.example.demo.repository.JournalEntryRepo;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Component
+@Slf4j
 public class JournalEntryServiceV2 {
     @Autowired
     private JournalEntryRepo journalEntryRepo;
@@ -53,7 +54,7 @@ public class JournalEntryServiceV2 {
                 journalEntryRepo.deleteById(id);
             }
         } catch (Exception e){
-            System.out.println(e);
+            log.error("Error ", e);
             throw new RuntimeException("An error occured", e);
         }
         return removed;

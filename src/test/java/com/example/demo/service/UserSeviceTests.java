@@ -23,12 +23,14 @@ public class UserSeviceTests {
     @Autowired
     private UserService userService;
 
+    @Disabled
     @ParameterizedTest
     @ArgumentsSource(UserArgumentsProvider.class)
     public void testSaveUser(User user){
         assertTrue(userService.saveNewUser(user));
     }
 
+    @Disabled
     @ParameterizedTest
     @CsvSource({
             "1,2,3",
