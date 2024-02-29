@@ -54,7 +54,7 @@ public class JournalEntryServiceV2 {
                 journalEntryRepo.deleteById(id);
             }
         } catch (Exception e){
-            log.error("Error occured", e);
+            log.error("Error occured while", e);
             throw new RuntimeException("An error occured", e);
         }
         return removed;
