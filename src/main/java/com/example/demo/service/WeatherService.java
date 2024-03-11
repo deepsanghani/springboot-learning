@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.api.response.WeatherApiResponse;
+import com.example.demo.cache.AppCache;
+import com.example.demo.constants.Placeholders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,13 +18,16 @@ import java.io.Serializable;
 public class WeatherService implements Serializable {
     @Value("${weather.api.key}")
     private String api_key;
-    private static final String api = "http://api.weatherapi.com/v1/current.json?key=api_key&q=CITY";
+
+    @Autowired
+    private AppCache appCacheEntity;
+
     @Autowired
     private RestTemplate restTemplate;
 
-    @Cacheable(value = "weatherCache", key = "#city")
+//    @Cacheable(value = "weatherCache", key = "#city")
     public WeatherApiResponse getWeather(String city){
-        String finalapi = api.replace("CITY", city).replace("api_key", api_key);
+        String finalapi = appCacheEntity.appCache.get(AppCache.keys.weather_api.toString()).replace(Placeholders.CITY, city).replace(Placeholders.API_KEY, api_key);
         ResponseEntity<WeatherApiResponse> response = restTemplate.exchange(finalapi, HttpMethod.GET, null, WeatherApiResponse.class);
         WeatherApiResponse body = response.getBody();
         return body;
