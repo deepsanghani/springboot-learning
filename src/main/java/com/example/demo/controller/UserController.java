@@ -6,6 +6,7 @@ import com.example.demo.entity.JournalEntryV2;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepo;
 import com.example.demo.service.JournalEntryServiceV2;
+import com.example.demo.service.RedisService;
 import com.example.demo.service.UserService;
 import com.example.demo.service.WeatherService;
 import org.bson.types.ObjectId;
@@ -31,6 +32,7 @@ public class UserController {
 
     @Autowired
     private WeatherService weatherService;
+
 //
 //    @GetMapping
 //    public List<User> getAllUser(){
@@ -48,7 +50,7 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteUserByName(String username){
+    public ResponseEntity<String> deleteUserByName(String username){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userRepo.deleteByUsername(authentication.getName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -62,6 +64,6 @@ public class UserController {
         if(weatherApiResponse != null){
             greeting = " Weather feels like" + weatherApiResponse.toString();
         }
-        return new ResponseEntity<>("Hi " + authentication.getName() + greeting, HttpStatus.OK);
+        return new ResponseEntity<String>("Hi " + authentication.getName() + greeting, HttpStatus.OK);
     }
 }

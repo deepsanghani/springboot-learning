@@ -25,11 +25,23 @@ public class WeatherService implements Serializable {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private RedisService redisService;
+
 //    @Cacheable(value = "weatherCache", key = "#city")
     public WeatherApiResponse getWeather(String city){
-        String finalapi = appCacheEntity.appCache.get(AppCache.keys.weather_api.toString()).replace(Placeholders.CITY, city).replace(Placeholders.API_KEY, api_key);
-        ResponseEntity<WeatherApiResponse> response = restTemplate.exchange(finalapi, HttpMethod.GET, null, WeatherApiResponse.class);
-        WeatherApiResponse body = response.getBody();
-        return body;
+        WeatherApiResponse weatherApiResponse = redisService.get("weather_of_" + city, WeatherApiResponse.class);
+        if(weatherApiResponse != null){
+            return weatherApiResponse;
+        }
+        else {
+            String finalapi = appCacheEntity.appCache.get(AppCache.keys.weather_api.toString()).replace(Placeholders.CITY, city).replace(Placeholders.API_KEY, api_key);
+            ResponseEntity<WeatherApiResponse> response = restTemplate.exchange(finalapi, HttpMethod.GET, null, WeatherApiResponse.class);
+            WeatherApiResponse body = response.getBody();
+            if(body!=null){
+                redisService.set("weather_of_"+city, body, 300l);
+            }
+            return body;
+        }
     }
 }
